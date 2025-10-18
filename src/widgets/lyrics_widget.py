@@ -164,7 +164,7 @@ class HTLyricsWidget(Gtk.Box, IDisconnectable):
                 break
         if self.get_mapped():
             if self.prev_index == new_index:
-                target_position = self.prev_value
+                return
             elif new_index == 0:
                 target_position = 0
             else:
@@ -188,7 +188,10 @@ class HTLyricsWidget(Gtk.Box, IDisconnectable):
         animation = Adw.TimedAnimation.new(
             self, self.adjustment.get_value(), value, 200, target
         )
+        scrolled_window = self.list_view.get_ancestor(Gtk.ScrolledWindow)
+        scrolled_window.set_kinetic_scrolling(False)
         animation.play()
+        scrolled_window.set_kinetic_scrolling(True)
 
         self.prev_value = value
 
